@@ -1,0 +1,38 @@
+html {
+  margin: 0;
+  padding: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+}
+
+.viewer-wrapper {
+  position: relative;
+  cursor: e-resize;
+}
+
+.viewer-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.active {
+  display: block;
+}
