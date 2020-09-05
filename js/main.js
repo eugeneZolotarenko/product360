@@ -43,14 +43,25 @@ const state = {
   isActive: false,
   x: 0,
   currentImage: 1,
+  //   viewPoints: [
+  //     [1, 9],
+  //     [9, 18],
+  //     [18, 27],
+  //     [27, 36],
+  //   ],
+  //   currentView: 1,
+  views: 3,
+  picturesIntervalMs: 40,
 }
 
-function startRotate(pos) {
+function startRotate(e, pos) {
+  e.preventDefault()
   state.isActive = true
   state.x = pos
 }
 
-function rotate(pos) {
+function rotate(e, pos) {
+  e.preventDefault()
   if (state.isActive === true) {
     if (state.x - 10 > pos) {
       state.currentImage++
@@ -77,17 +88,63 @@ function finishRotate() {
   }
 }
 
-picturesContainer.addEventListener("mousedown", (e) => startRotate(e.offsetX))
+picturesContainer.addEventListener("mousedown", (e) =>
+  startRotate(e, e.offsetX)
+)
 picturesContainer.addEventListener("touchstart", (e) => {
-  e.preventDefault()
-  startRotate(e.touches[0].clientX)
+  startRotate(e, e.touches[0].clientX)
 })
 
-picturesContainer.addEventListener("mousemove", (e) => rotate(e.offsetX))
+picturesContainer.addEventListener("mousemove", (e) => rotate(e, e.offsetX))
 picturesContainer.addEventListener("touchmove", (e) => {
-  e.preventDefault()
-  rotate(e.touches[0].clientX)
+  rotate(e, e.touches[0].clientX)
 })
 
 picturesContainer.addEventListener("mouseup", () => finishRotate())
 picturesContainer.addEventListener("touchend", () => finishRotate())
+picturesContainer.addEventListener("mouseleave", () => finishRotate())
+
+// Rotate by buttons
+
+const toLeftBtn = document.querySelector("#rotate-to-left")
+const toRightBtn = document.querySelector("#rotate-to-right")
+
+toRightBtn.addEventListener("click", () => {
+  //   state.currentView++
+  //   if (state.currentView > state.viewPoints.length) {
+  //     state.currentView = 1
+  //   }
+  //   console.log(state.currentView)
+  const rotation = setInterval(() => {
+    state.currentImage++
+    if (state.currentImage > picturesArr.length) {
+      state.currentImage = 1
+    }
+    setActivePicture(state.currentImage)
+  }, state.picturesIntervalMs)
+
+  setTimeout(() => {
+    clearInterval(rotation)
+  }, (state.picturesIntervalMs * picturesArr.length) / state.views)
+})
+
+toLeftBtn.addEventListener("click", () => {
+  //   state.currentView--
+  //   if (state.currentView < 1) {
+  //     state.currentView = state.viewPoints.length
+  //   }
+  //   console.log(state.currentView)
+  const rotation = setInterval(() => {
+    state.currentImage--
+    if (state.currentImage < 1) {
+      state.currentImage = picturesArr.length
+    }
+    setActivePicture(state.currentImage)
+  }, state.picturesIntervalMs)
+
+  setTimeout(() => {
+    clearInterval(rotation)
+  }, (state.picturesIntervalMs * picturesArr.length) / state.views)
+})
+
+// End Rotate by buttons
