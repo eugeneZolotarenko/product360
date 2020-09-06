@@ -109,12 +109,13 @@ picturesContainer.addEventListener("mouseleave", () => finishRotate())
 const toLeftBtn = document.querySelector("#rotate-to-left")
 const toRightBtn = document.querySelector("#rotate-to-right")
 
-toRightBtn.addEventListener("click", () => {
+toRightBtn.addEventListener("click", (e) => {
   //   state.currentView++
   //   if (state.currentView > state.viewPoints.length) {
   //     state.currentView = 1
   //   }
   //   console.log(state.currentView)
+  e.target.disabled = true
   const rotation = setInterval(() => {
     state.currentImage++
     if (state.currentImage > picturesArr.length) {
@@ -124,16 +125,18 @@ toRightBtn.addEventListener("click", () => {
   }, state.picturesIntervalMs)
 
   setTimeout(() => {
+    e.target.disabled = false
     clearInterval(rotation)
   }, (state.picturesIntervalMs * picturesArr.length) / state.views)
 })
 
-toLeftBtn.addEventListener("click", () => {
+toLeftBtn.addEventListener("click", (e) => {
   //   state.currentView--
   //   if (state.currentView < 1) {
   //     state.currentView = state.viewPoints.length
   //   }
   //   console.log(state.currentView)
+  e.target.disabled = true
   const rotation = setInterval(() => {
     state.currentImage--
     if (state.currentImage < 1) {
@@ -143,6 +146,7 @@ toLeftBtn.addEventListener("click", () => {
   }, state.picturesIntervalMs)
 
   setTimeout(() => {
+    e.target.disabled = false
     clearInterval(rotation)
   }, (state.picturesIntervalMs * picturesArr.length) / state.views)
 })
